@@ -1,21 +1,45 @@
-import { View, Text, Button } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
+
+import produtos from "../data/dados";
+import { Divider, List } from 'react-native-paper';
 
 export default function ProdutosScreen(props) {
+
+  console.warn(produtos);
+
+  function getProdutoItem({ item: prod }) {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Produtos Screen</Text>
-        <Button
-        title='Ir para Home'
-        onPress={() => props.navigation.navigate('Home')}
-      />
-       <Button
-        title='Ir para Sobre' any
-        onPress={() => props.navigation.navigate('Sobre')}
-      />
-      <Button
-        title='Ir para Contato' any
-        onPress={() => props.navigation.navigate('Contato')}
-      />
+      <View>
+        <List.Item style={estilos.listItem}
+          title={prod.nome}
+          description={prod.preco}
+          left={() => <List.Image variant='image'
+            source={{ uri: prod.linkImagem }}
+          />}
+        />
+        <Divider />
       </View>
-    );
+    )
   }
+  return (
+    <View style={estilos.container}>
+      <FlatList
+        data={produtos}
+        keyExtractor={prod => prod.id}
+        renderItem={getProdutoItem}
+        style={estilos.flatList}
+      />
+    </View>
+  );
+}
+
+const estilos = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  flatList: {
+    width: "95%"
+  }
+})
